@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Emerytalny</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-main: #1a1a1a;
+            --text-muted: #666666;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --border-color: #e5e7eb;
+            --radius: 12px;
+            --transition: all 0.2s ease-in-out;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.5;
+            padding: 2rem 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            padding: 2.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding: 1.5rem;
+                gap: 2rem;
+            }
+        }
+
+        header {
+            grid-column: 1 / -1;
+            margin-bottom: -1rem;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .input-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-main);
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            color: var(--text-main);
+            background-color: #fff;
+            transition: var(--transition);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .results-section {
+            background-color: #fafafa;
+            border-radius: 8px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .result-item {
+            margin-bottom: 2rem;
+        }
+
+        .result-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .result-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+
+        .result-value {
+            font-size: 2.25rem;
+            font-weight: 600;
+            letter-spacing: -0.03em;
+            color: var(--text-main);
+        }
+
+        .result-value.nominal {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-top: 0.25rem;
+        }
+
+        .note {
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Kalkulator Emerytalny</h1>
+        <p class="subtitle">Zaplanuj swoją przyszłość finansową z uwzględnieniem inflacji.</p>
+    </header>
+
+    <section class="input-section">
+        <div class="input-group">
+            <label for="currentAge">Obecny wiek (lata)</label>
+            <input type="number" id="currentAge" value="25" min="0" max="100">
+        </div>
+
+        <div class="input-group">
+            <label for="retirementAge">Planowany wiek emerytalny (lata)</label>
+            <input type="number" id="retirementAge" value="65" min="0" max="100">
+        </div>
+
+        <div class="input-group">
+            <label for="currentSavings">Aktualne oszczędności (PLN)</label>
+            <input type="number" id="currentSavings" value="10000" min="0">
+        </div>
+
+        <div class="input-group">
+            <label for="monthlyContribution">Miesięczna wpłata (PLN)</label>
+            <input type="number" id="monthlyContribution" value="500" min="0">
+        </div>
+
+        <div class="input-group">
+            <label for="annualReturn">Szacowana roczna stopa zwrotu (%)</label>
+            <input type="number" id="annualReturn" value="7" step="0.1" min="0">
+        </div>
+
+        <div class="input-group">
+            <label for="inflation">Średnioroczna inflacja (%)</label>
+            <input type="number" id="inflation" value="2.5" step="0.1" min="0">
+        </div>
+    </section>
+
+    <section class="results-section">
+        <div class="result-item">
+            <p class="result-label">Realna wartość kapitału (w dzisiejszych pieniądzach)</p>
+            <div class="result-value" id="realCapital">0 zł</div>
+        </div>
+
+        <div class="result-item">
+            <p class="result-label">Nominalna wartość kapitału</p>
+            <div class="result-value nominal" id="nominalCapital">0 zł</div>
+        </div>
+
+        <div class="note">
+            * <strong>Realna wartość</strong> reprezentuje siłę nabywczą Twoich oszczędności na emeryturze, po odjęciu wpływu inflacji. Do obliczeń przyjęto kapitalizację miesięczną.
+        </div>
+    </section>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Pobranie elementów formularza
+        const inputs = document.querySelectorAll('input');
+        
+        const formatCurrency = (value) => {
+            return new Intl.NumberFormat('pl-PL', {
+                style: 'currency',
+                currency: 'PLN',
+                maximumFractionDigits: 0
+            }).format(value);
+        };
+
+        const calculateRetirement = () => {
+            const currentAge = parseInt(document.getElementById('currentAge').value) || 0;
+            const retirementAge = parseInt(document.getElementById('retirementAge').value) || 0;
+            const currentSavings = parseFloat(document.getElementById('currentSavings').value) || 0;
+            const monthlyContribution = parseFloat(document.getElementById('monthlyContribution').value) || 0;
+            const annualReturn = (parseFloat(document.getElementById('annualReturn').value) || 0) / 100;
+            const inflation = (parseFloat(document.getElementById('inflation').value) || 0) / 100;
+
+            const yearsToSave = retirementAge - currentAge;
+            
+            if (yearsToSave <= 0) {
+                document.getElementById('realCapital').innerText = formatCurrency(currentSavings);
+                document.getElementById('nominalCapital').innerText = formatCurrency(currentSavings);
+                return;
+            }
+
+            const months = yearsToSave * 12;
+            
+            // 1. Obliczenia nominalne
+            const monthlyReturnNominal = annualReturn / 12;
+            let nominalCapital = currentSavings;
+
+            for (let i = 0; i < months; i++) {
+                nominalCapital = (nominalCapital + monthlyContribution) * (1 + monthlyReturnNominal);
+            }
+
+            // 2. Obliczenia realne (uwzględniające inflację)
+            // Realna stopa zwrotu wyliczana ze wzoru Fishera: (1 + r_real) = (1 + r_nom) / (1 + i)
+            const realAnnualReturn = ((1 + annualReturn) / (1 + inflation)) - 1;
+            const monthlyReturnReal = realAnnualReturn / 12;
+            let realCapital = currentSavings;
+
+            for (let i = 0; i < months; i++) {
+                realCapital = (realCapital + monthlyContribution) * (1 + monthlyReturnReal);
+            }
+
+            // Aktualizacja UI
+            document.getElementById('realCapital').innerText = formatCurrency(realCapital);
+            document.getElementById('nominalCapital').innerText = formatCurrency(nominalCapital);
+        };
+
+        // Nasłuchiwanie zmian w polach wejściowych (natychmiastowa reakcja)
+        inputs.forEach(input => {
+            input.addEventListener('input', calculateRetirement);
+        });
+
+        // Pierwsze wywołanie przy załadowaniu strony
+        calculateRetirement();
+    });
+</script>
+
+</body>
+</html>
